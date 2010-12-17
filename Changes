@@ -1,0 +1,14 @@
+Revision history for {{ $dist->name }}: {{ $dist->version }}
+
+{{ $NEXT }}
+       Use more DZ Plugins
+
+0.05   Thu Nov 27 17:55:36 2008
+       Switch to Dist::Zilla
+
+0.002  ?
+       CPAN style AlignDB::DeltaG
+
+0.001  Tue Jan  8 03:54:56 2008
+       Initial release.
+
