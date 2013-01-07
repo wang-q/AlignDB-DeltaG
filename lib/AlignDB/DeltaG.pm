@@ -1,8 +1,8 @@
 package AlignDB::DeltaG;
+
 # ABSTRACT: Calculate deltaG of polymer DNA sequences
 
 use Moose;
-use Carp;
 
 =attr temperature
 
@@ -10,7 +10,7 @@ get/set temperature, Default: 37.0 degree centigrade
 
 =cut
 
-has 'temperature' => ( is => 'rw', isa => 'Num', default => 37.0, );
+has 'temperature' => ( is => 'rw', isa => 'Num', default => sub {37.0}, );
 
 =attr salt_conc
 
@@ -18,8 +18,8 @@ salt concentration, Default: 1 [Na+], in M
 should be above 0.05 M and below 1.1 M 
    
 =cut
-   
-has 'salt_conc'   => ( is => 'rw', isa => 'Num', default => 1.0, );
+
+has 'salt_conc' => ( is => 'rw', isa => 'Num', default => sub {1.0}, );
 
 =attr deltaH
 
@@ -47,15 +47,7 @@ has 'deltaG' => ( is => 'ro', isa => 'HashRef', );
 
 =method BUILD
 
-      Usage : $obj->BUILD
-    Purpose : rebuild the object by the new temperature and/or salt_conc values
-    Returns : None
- Parameters : None
-     Throws : no exceptions
-   Comments : The BUILD method is called by Moose::Object::BUILDALL, which is
-            : called by Moose::Object::new. So it is also the constructor
-            : method. 
-   See Also : n/a
+rebuild the object by the new temperature and/or salt_conc values
 
 =cut
 
@@ -76,13 +68,9 @@ sub BUILD {
 
 =method polymer_deltaG
 
-      Usage : my $dG = $obj->polymer_deltaG($seq);
-    Purpose : Calculate deltaG of a given sequence
-    Returns : Num
- Parameters : Str
-     Throws : no exceptions
-   Comments : This method is the main calculating one.
-   See Also : n/a
+my $dG = $obj->polymer_deltaG($seq);
+Calculate deltaG of a given sequence
+This method is the main calculating sub.
 
 =cut
 
@@ -121,13 +109,8 @@ sub polymer_deltaG {
 
 =method _load_thermodynamic_data
 
-      Usage : my ($deltaH, $deltaS) = $self->_load_thermodynamic_data;
-    Purpose : load thermodynamic data come from references
-    Returns : (HashRef, HashRef)
- Parameters : None
-     Throws : no exceptions
-   Comments : None
-   See Also : n/a
+my ($deltaH, $deltaS) = $self->_load_thermodynamic_data;
+load thermodynamic data come from references
 
 =cut
 
@@ -177,13 +160,8 @@ sub _load_thermodynamic_data {
 
 =method _init_deltaG
 
-      Usage : my $deltaG = $self->_init_deltaG;
-    Purpose : recalculate deltaG by the new temperature and salt_conc values
-    Returns : HashRef
- Parameters : None
-     Throws : no exceptions
-   Comments : None
-   See Also : n/a
+my $deltaG = $self->_init_deltaG;
+recalculate deltaG by the new temperature and salt_conc values
 
 =cut
 
@@ -215,8 +193,8 @@ sub _init_deltaG {
         next if $key =~ /init|sym/;
 
         my $dS = $deltaS->{$key} + $entropy_adjust;
-        my $dG = $deltaH->{$key}
-            - ( ( 273.15 + $temperature ) * ( $dS / 1000 ) );
+        my $dG
+            = $deltaH->{$key} - ( ( 273.15 + $temperature ) * ( $dS / 1000 ) );
         $deltaG{$key} = $dG;
     }
 
@@ -225,20 +203,15 @@ sub _init_deltaG {
 
 =method _rev_com
 
-      Usage : my $rc_polymer = $self->_rev_com($polymer);
-    Purpose : Reverse and complementary a sequence
-    Returns : Str
- Parameters : Str
-     Throws : no exceptions
-   Comments : None
-   See Also : n/a
+my $rc_polymer = $self->_rev_com($polymer);
+Reverse and complementary a sequence
 
 =cut
 
 sub _rev_com {
     my ( $self, $sequence ) = @_;
 
-    $sequence = reverse $sequence;    # reverse
+    $sequence = reverse $sequence;                       # reverse
     $sequence =~ tr/ACGTMRWSYKVHDBN/TGCAKYSWRMBDHVN/;    # complement
 
     return $sequence;
