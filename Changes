@@ -1,14 +1,12 @@
-Revision history for {{ $dist->name }}: {{ $dist->version }}
+Revision history for AlignDB-DeltaG
 
-{{ $NEXT }}
-       Use more DZ Plugins
+{{$NEXT}}
+
+1.0.0  2016-01-15 15:55:41 CST
+    - Switch to Dist::Milla
 
 0.05   Thu Nov 27 17:55:36 2008
-       Switch to Dist::Zilla
+    - Switch to Dist::Zilla
 
-0.002  ?
-       CPAN style AlignDB::DeltaG
-
-0.001  Tue Jan  8 03:54:56 2008
-       Initial release.
-
+0.01   Tue Jan  8 03:54:56 2008
+    - Initial release.
