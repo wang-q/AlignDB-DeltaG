@@ -1,0 +1,67 @@
+{
+   "abstract" : "Calculate deltaG of polymer DNA sequences",
+   "author" : [
+      "Qiang Wang <wang-q@outlook.com>"
+   ],
+   "dynamic_config" : 0,
+   "generated_by" : "Dist::Zilla version 5.039, Dist::Milla version v1.0.15, CPAN::Meta::Converter version 2.150005",
+   "license" : [
+      "perl_5"
+   ],
+   "meta-spec" : {
+      "url" : "http://search.cpan.org/perldoc?CPAN::Meta::Spec",
+      "version" : "2"
+   },
+   "name" : "AlignDB-DeltaG",
+   "no_index" : {
+      "directory" : [
+         "t",
+         "xt",
+         "inc",
+         "share",
+         "eg",
+         "examples"
+      ]
+   },
+   "prereqs" : {
+      "configure" : {
+         "requires" : {
+            "ExtUtils::MakeMaker" : "0"
+         }
+      },
+      "develop" : {
+         "requires" : {
+            "Dist::Milla" : "v1.0.15",
+            "Test::Pod" : "1.41"
+         }
+      },
+      "runtime" : {
+         "requires" : {
+            "Moose" : "0",
+            "perl" : "5.008001"
+         }
+      },
+      "test" : {
+         "requires" : {
+            "Test::More" : "0.88"
+         }
+      }
+   },
+   "release_status" : "stable",
+   "resources" : {
+      "bugtracker" : {
+         "web" : "https://github.com/wang-q/AlignDB-DeltaG/issues"
+      },
+      "homepage" : "https://github.com/wang-q/AlignDB-DeltaG",
+      "repository" : {
+         "type" : "git",
+         "url" : "https://github.com/wang-q/AlignDB-DeltaG.git",
+         "web" : "https://github.com/wang-q/AlignDB-DeltaG"
+      }
+   },
+   "version" : "1.0.0",
+   "x_contributors" : [
+      "wangq <wangqiang1997@gmail.com>"
+   ]
+}
+

@@ -1,55 +1,13 @@
 package AlignDB::DeltaG;
-
-# ABSTRACT: Calculate deltaG of polymer DNA sequences
-
 use Moose;
 
-=attr temperature
-
-get/set temperature, Default: 37.0 degree centigrade
-
-=cut
+our $VERSION = '1.0.0';
 
 has 'temperature' => ( is => 'rw', isa => 'Num', default => sub {37.0}, );
-
-=attr salt_conc
-
-salt concentration, Default: 1 [Na+], in M
-should be above 0.05 M and below 1.1 M 
-   
-=cut
-
-has 'salt_conc' => ( is => 'rw', isa => 'Num', default => sub {1.0}, );
-
-=attr deltaH
-
-enthalpy, isa HashRef
-
-=cut
-
-has 'deltaH' => ( is => 'ro', isa => 'HashRef', );
-
-=attr deltaS
-
-entropy (cal/K.mol), isa HashRef
-
-=cut
-
-has 'deltaS' => ( is => 'ro', isa => 'HashRef', );
-
-=attr deltaG
-
-free energy, isa HashRef
-
-=cut
-
-has 'deltaG' => ( is => 'ro', isa => 'HashRef', );
-
-=method BUILD
-
-rebuild the object by the new temperature and/or salt_conc values
-
-=cut
+has 'salt_conc'   => ( is => 'rw', isa => 'Num', default => sub {1.0}, );
+has 'deltaH'      => ( is => 'ro', isa => 'HashRef', );
+has 'deltaS'      => ( is => 'ro', isa => 'HashRef', );
+has 'deltaG'      => ( is => 'ro', isa => 'HashRef', );
 
 sub BUILD {
     my $self = shift;
@@ -65,14 +23,6 @@ sub BUILD {
 
     return;
 }
-
-=method polymer_deltaG
-
-my $dG = $obj->polymer_deltaG($seq);
-Calculate deltaG of a given sequence
-This method is the main calculating sub.
-
-=cut
 
 sub polymer_deltaG {
     my ( $self, $polymer ) = @_;
@@ -106,13 +56,6 @@ sub polymer_deltaG {
 
     return $dG;
 }
-
-=method _load_thermodynamic_data
-
-my ($deltaH, $deltaS) = $self->_load_thermodynamic_data;
-load thermodynamic data come from references
-
-=cut
 
 sub _load_thermodynamic_data {
     my ($self) = @_;
@@ -158,13 +101,6 @@ sub _load_thermodynamic_data {
     return ( \%deltaH, \%deltaS );
 }
 
-=method _init_deltaG
-
-my $deltaG = $self->_init_deltaG;
-recalculate deltaG by the new temperature and salt_conc values
-
-=cut
-
 sub _init_deltaG {
     my ($self) = @_;
 
@@ -201,13 +137,6 @@ sub _init_deltaG {
     return \%deltaG;
 }
 
-=method _rev_com
-
-my $rc_polymer = $self->_rev_com($polymer);
-Reverse and complementary a sequence
-
-=cut
-
 sub _rev_com {
     my ( $self, $sequence ) = @_;
 
@@ -220,6 +149,14 @@ sub _rev_com {
 1;    # Magic true value required at end of module
 
 __END__
+
+=pod
+
+=encoding UTF-8
+
+=head1 NAME
+
+AlignDB::DeltaG - Calculate deltaG of polymer DNA sequences
 
 =head1 SYNOPSIS
 
@@ -252,15 +189,74 @@ __END__
 
 =head1 DESCRIPTION
 
-C<AlignDB::DeltaG> is a simple class to calculate deltaG of polymer DNA
-sequences using the NN model.
+C<AlignDB::DeltaG> is a simple class to calculate deltaG of polymer DNA sequences using the NN model.
 
-In the near future, it may be extanded to calculate oligonucleotide
-thermodynamics.
+In the near future, it may be extanded to calculate oligonucleotide thermodynamics.
 
 =head2 Reference
 
- 1. SantaLucia J, Jr. 2004. Annu Rev Biophys Biomol Struct; 
+ 1. SantaLucia J, Jr. 2004. Annu Rev Biophys Biomol Struct;
  2. SantaLucia J, Jr. 1998. Proc Natl Acad Sci U S A;
+
+=head1 ATTRIBUTES
+
+=head2 temperature
+
+get/set temperature, Default: 37.0 degree centigrade
+
+=head2 salt_conc
+
+salt concentration, Default: 1 [Na+], in M
+should be above 0.05 M and below 1.1 M
+
+=head2 deltaH
+
+enthalpy, isa HashRef
+
+=head2 deltaS
+
+entropy (cal/K.mol), isa HashRef
+
+=head2 deltaG
+
+free energy, isa HashRef
+
+=head1 METHODS
+
+=head2 BUILD
+
+rebuild the object by the new temperature and/or salt_conc values
+
+=head2 polymer_deltaG
+
+my $dG = $obj->polymer_deltaG($seq);
+Calculate deltaG of a given sequence
+This method is the main calculating sub.
+
+=head2 _load_thermodynamic_data
+
+my ($deltaH, $deltaS) = $self->_load_thermodynamic_data;
+load thermodynamic data come from references
+
+=head2 _init_deltaG
+
+my $deltaG = $self->_init_deltaG;
+recalculate deltaG by the new temperature and salt_conc values
+
+=head2 _rev_com
+
+my $rc_polymer = $self->_rev_com($polymer);
+Reverse and complementary a sequence
+
+=head1 AUTHOR
+
+Qiang Wang <wang-q@outlook.com>
+
+=head1 COPYRIGHT AND LICENSE
+
+This software is copyright (c) 2008 by Qiang Wang.
+
+This is free software; you can redistribute it and/or modify it under
+the same terms as the Perl 5 programming language system itself.
 
 =cut
