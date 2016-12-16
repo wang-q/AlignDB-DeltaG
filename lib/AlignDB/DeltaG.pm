@@ -1,7 +1,7 @@
 package AlignDB::DeltaG;
 use Moose;
 
-our $VERSION = '1.0.0';
+our $VERSION = '1.0.1';
 
 has 'temperature' => ( is => 'rw', isa => 'Num', default => sub {37.0}, );
 has 'salt_conc'   => ( is => 'rw', isa => 'Num', default => sub {1.0}, );
