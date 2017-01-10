@@ -21,8 +21,13 @@ use Test::Number::Delta within => 1e-2;
             ],
             -35.6605,
         ],
+        [   [   qw{ 37
+                    1
+                    GAATTC }
+            ],
+            -1.1399,
+        ],
     );
-
 
     for my $i ( 0 .. $#data ) {
         my ( $inputs, $except ) = @{ $data[$i] };
@@ -31,7 +36,7 @@ use Test::Number::Delta within => 1e-2;
             temperature => $inputs->[0],
             salt_conc   => $inputs->[1],
         );
-        my $result = $deltaG->polymer_deltaG($inputs->[2]);
+        my $result = $deltaG->polymer_deltaG( $inputs->[2] );
         Test::Number::Delta::delta_ok( $result, $except, "calc $i" );
     }
 
