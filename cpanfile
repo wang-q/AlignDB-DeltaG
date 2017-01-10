@@ -1,5 +1,6 @@
 requires 'Moose';
-requires 'perl', '5.008001';
+requires 'YAML::Syck', '1.29';
+requires 'perl', '5.010001';
 
 on test => sub {
     requires 'Test::More', 0.88;
