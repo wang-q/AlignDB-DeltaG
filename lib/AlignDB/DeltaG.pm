@@ -1,5 +1,6 @@
 package AlignDB::DeltaG;
 use Moose;
+use YAML::Syck;
 
 our $VERSION = '1.0.1';
 
@@ -25,7 +26,8 @@ sub BUILD {
 }
 
 sub polymer_deltaG {
-    my ( $self, $polymer ) = @_;
+    my $self    = shift;
+    my $polymer = shift;
 
     $polymer = uc $polymer;
     return if $polymer =~ /[^AGCT]/;
@@ -57,8 +59,9 @@ sub polymer_deltaG {
     return $dG;
 }
 
+# Load thermodynamic data comes from references
 sub _load_thermodynamic_data {
-    my ($self) = @_;
+    my $self = shift;
 
     #-------------------#
     # deltaH (kcal/mol)
@@ -101,8 +104,9 @@ sub _load_thermodynamic_data {
     return ( \%deltaH, \%deltaS );
 }
 
+# Recalculate deltaG by the new temperature and salt_conc values
 sub _init_deltaG {
-    my ($self) = @_;
+    my $self = shift;
 
     # dG = dH - TdS, and dS is dependent on the salt concentration
     my $temperature = $self->temperature;
@@ -138,7 +142,8 @@ sub _init_deltaG {
 }
 
 sub _rev_com {
-    my ( $self, $sequence ) = @_;
+    my $self     = shift;
+    my $sequence = shift;
 
     $sequence = reverse $sequence;                       # reverse
     $sequence =~ tr/ACGTMRWSYKVHDBN/TGCAKYSWRMBDHVN/;    # complement
@@ -165,12 +170,12 @@ AlignDB::DeltaG - Calculate deltaG of polymer DNA sequences
 =item Normal use
 
     use AlignDB::DeltaG
-    my $obj = AlignDB::DeltaG->new(
+    my $deltaG = AlignDB::DeltaG->new(
         temperature => 37,
         salt_conc   => 1,
     );
     my $seq = "TAACAAGCAATGAGATAGAGAAAGAAATATATCCA";
-    print "$seq deltaG: ", $obj->polymer_deltaG($seq), "\n";
+    print "$seq deltaG: ", $deltaG->polymer_deltaG($seq), "\n";
 
 =item Reset conditionss
 
@@ -178,12 +183,12 @@ AlignDB::DeltaG - Calculate deltaG of polymer DNA sequences
     # default value:
     #   temperature => 37,
     #   salt_conc   => 1,
-    my $obj = AlignDB::DeltaG->new;
-    $obj->temperature(30);
-    $obj->salt_conc(0.1);
-    $obj->BUILD;
+    my $deltaG = AlignDB::DeltaG->new;
+    $deltaG->temperature(30);
+    $deltaG->salt_conc(0.1);
+    $deltaG->BUILD;
     my $seq = "TAACAAGCAATGAGATAGAGAAAGAAATATATCCA";
-    print "$seq deltaG: ", $obj->polymer_deltaG($seq), "\n";
+    print "$seq deltaG: ", $deltaG->polymer_deltaG($seq), "\n";
 
 =back
 
@@ -200,26 +205,15 @@ In the near future, it may be extanded to calculate oligonucleotide thermodynami
 
 =head1 ATTRIBUTES
 
-=head2 temperature
+C<temperature> - default: 37.0 degree centigrade
 
-get/set temperature, Default: 37.0 degree centigrade
+C<salt_conc> - salt concentration, Default: 1 [Na+], in M. Should be above 0.05 M and below 1.1 M
 
-=head2 salt_conc
+C<deltaH> - enthalpy, isa HashRef
 
-salt concentration, Default: 1 [Na+], in M
-should be above 0.05 M and below 1.1 M
+C<deltaS> - entropy (cal/K.mol), isa HashRef
 
-=head2 deltaH
-
-enthalpy, isa HashRef
-
-=head2 deltaS
-
-entropy (cal/K.mol), isa HashRef
-
-=head2 deltaG
-
-free energy, isa HashRef
+C<deltaG> - free energy, isa HashRef
 
 =head1 METHODS
 
@@ -229,24 +223,11 @@ rebuild the object by the new temperature and/or salt_conc values
 
 =head2 polymer_deltaG
 
-my $dG = $obj->polymer_deltaG($seq);
-Calculate deltaG of a given sequence
+    my $dG = $obj->polymer_deltaG($seq);
+
+Calculate deltaG of a given sequence.
+
 This method is the main calculating sub.
-
-=head2 _load_thermodynamic_data
-
-my ($deltaH, $deltaS) = $self->_load_thermodynamic_data;
-load thermodynamic data come from references
-
-=head2 _init_deltaG
-
-my $deltaG = $self->_init_deltaG;
-recalculate deltaG by the new temperature and salt_conc values
-
-=head2 _rev_com
-
-my $rc_polymer = $self->_rev_com($polymer);
-Reverse and complementary a sequence
 
 =head1 AUTHOR
 
