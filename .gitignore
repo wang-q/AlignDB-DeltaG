@@ -14,4 +14,8 @@ blib
 !META.json
 !LICENSE
 
+!.travis.yml
+
+# IDE
+.idea
 .komodotools
