@@ -2,7 +2,7 @@ package AlignDB::DeltaG;
 use Moose;
 use YAML::Syck;
 
-our $VERSION = '1.0.1';
+our $VERSION = '1.1.0';
 
 has 'temperature' => ( is => 'rw', isa => 'Num', default => sub {37.0}, );
 has 'salt_conc'   => ( is => 'rw', isa => 'Num', default => sub {1.0}, );
