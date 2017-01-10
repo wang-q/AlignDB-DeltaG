@@ -1,3 +1,4 @@
+[![Build Status](https://travis-ci.org/wang-q/AlignDB-DeltaG.svg?branch=master)](https://travis-ci.org/wang-q/AlignDB-DeltaG) [![Coverage Status](http://codecov.io/github/wang-q/AlignDB-DeltaG/coverage.svg?branch=master)](https://codecov.io/github/wang-q/AlignDB-DeltaG?branch=master) [![MetaCPAN Release](https://badge.fury.io/pl/AlignDB-DeltaG.svg)](https://metacpan.org/release/AlignDB-DeltaG)
 # NAME
 
 AlignDB::DeltaG - Calculate deltaG of polymer DNA sequences
@@ -7,12 +8,12 @@ AlignDB::DeltaG - Calculate deltaG of polymer DNA sequences
 - Normal use
 
         use AlignDB::DeltaG
-        my $obj = AlignDB::DeltaG->new(
+        my $deltaG = AlignDB::DeltaG->new(
             temperature => 37,
             salt_conc   => 1,
         );
         my $seq = "TAACAAGCAATGAGATAGAGAAAGAAATATATCCA";
-        print "$seq deltaG: ", $obj->polymer_deltaG($seq), "\n";
+        print "$seq deltaG: ", $deltaG->polymer_deltaG($seq), "\n";
 
 - Reset conditionss
 
@@ -20,12 +21,12 @@ AlignDB::DeltaG - Calculate deltaG of polymer DNA sequences
         # default value:
         #   temperature => 37,
         #   salt_conc   => 1,
-        my $obj = AlignDB::DeltaG->new;
-        $obj->temperature(30);
-        $obj->salt_conc(0.1);
-        $obj->BUILD;
+        my $deltaG = AlignDB::DeltaG->new;
+        $deltaG->temperature(30);
+        $deltaG->salt_conc(0.1);
+        $deltaG->BUILD;
         my $seq = "TAACAAGCAATGAGATAGAGAAAGAAATATATCCA";
-        print "$seq deltaG: ", $obj->polymer_deltaG($seq), "\n";
+        print "$seq deltaG: ", $deltaG->polymer_deltaG($seq), "\n";
 
 # DESCRIPTION
 
@@ -40,26 +41,15 @@ In the near future, it may be extanded to calculate oligonucleotide thermodynami
 
 # ATTRIBUTES
 
-## temperature
+`temperature` - default: 37.0 degree centigrade
 
-get/set temperature, Default: 37.0 degree centigrade
+`salt_conc` - salt concentration, Default: 1 \[Na+\], in M. Should be above 0.05 M and below 1.1 M
 
-## salt\_conc
+`deltaH` - enthalpy, isa HashRef
 
-salt concentration, Default: 1 \[Na+\], in M
-should be above 0.05 M and below 1.1 M
+`deltaS` - entropy (cal/K.mol), isa HashRef
 
-## deltaH
-
-enthalpy, isa HashRef
-
-## deltaS
-
-entropy (cal/K.mol), isa HashRef
-
-## deltaG
-
-free energy, isa HashRef
+`deltaG` - free energy, isa HashRef
 
 # METHODS
 
@@ -69,24 +59,11 @@ rebuild the object by the new temperature and/or salt\_conc values
 
 ## polymer\_deltaG
 
-my $dG = $obj->polymer\_deltaG($seq);
-Calculate deltaG of a given sequence
+    my $dG = $obj->polymer_deltaG($seq);
+
+Calculate deltaG of a given sequence.
+
 This method is the main calculating sub.
-
-## \_load\_thermodynamic\_data
-
-my ($deltaH, $deltaS) = $self->\_load\_thermodynamic\_data;
-load thermodynamic data come from references
-
-## \_init\_deltaG
-
-my $deltaG = $self->\_init\_deltaG;
-recalculate deltaG by the new temperature and salt\_conc values
-
-## \_rev\_com
-
-my $rc\_polymer = $self->\_rev\_com($polymer);
-Reverse and complementary a sequence
 
 # AUTHOR
 
